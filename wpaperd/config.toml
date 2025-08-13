@@ -1,0 +1,8 @@
+
+[default]
+path = "/home/mikel/Pictures/wallpapers"
+duration = "10m"
+mode = "center"
+sorting = "ascending"
+
+[default.transition.cross-warp]

@@ -1,5 +1,68 @@
 {
   "bar.customModules.storage.paths": [
     "/"
-  ]
+  ],
+  "theme.font.size": "1rem",
+  "terminal": "kitty",
+  "menus.dashboard.shortcuts.left.shortcut4.command": "walker",
+  "menus.dashboard.shortcuts.left.shortcut1.command": "firefox",
+  "menus.dashboard.shortcuts.left.shortcut1.tooltip": "Firefox",
+  "menus.dashboard.directories.left.directory3.command": "nautilus \"/home/mikel/projects/\"",
+  "menus.clock.weather.enabled": false,
+  "menus.dashboard.directories.left.directory2.command": "nautilus \"/home/mikel/Videos/\"",
+  "menus.dashboard.directories.left.directory1.command": "nautilus \"/home/mikel/Downloads/\"",
+  "menus.dashboard.directories.right.directory3.command": "nautilus \"/home/mikel/\"",
+  "menus.dashboard.directories.right.directory2.command": "nautilus \"/home/mikel/Pictures/\"",
+  "menus.dashboard.directories.right.directory1.command": "nautilus \"/home/mikel/Documents/\"",
+  "theme.bar.menus.monochrome": false,
+  "bar.layouts": {
+    "0": {
+      "left": [
+        "dashboard",
+        "workspaces",
+        "windowtitle"
+      ],
+      "middle": [
+        "media"
+      ],
+      "right": [
+        "volume",
+        "network",
+        "bluetooth",
+        "systray",
+        "clock",
+        "notifications"
+      ]
+    },
+    "1": {
+      "left": [
+        "dashboard",
+        "workspaces",
+        "windowtitle"
+      ],
+      "middle": [
+        "media"
+      ],
+      "right": [
+        "volume",
+        "clock",
+        "notifications"
+      ]
+    },
+    "2": {
+      "left": [
+        "dashboard",
+        "workspaces",
+        "windowtitle"
+      ],
+      "middle": [
+        "media"
+      ],
+      "right": [
+        "volume",
+        "clock",
+        "notifications"
+      ]
+    }
+  }
 }
