@@ -5,7 +5,7 @@
   # manage.
   home.username = "mikel";
   home.homeDirectory = "/home/mikel";
-
+  nixpkgs.config.allowUnfree = true;
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
   # introduces backwards incompatible changes.
@@ -62,18 +62,12 @@
     python312Packages.pip
     tree-sitter
     sqlite
-    dotnet-sdk_6
-    dotnet-sdk_7
-    dotnet-sdk_9
-    dotnet-sdk_10
-    dotnet-runtime_6
-    dotnet-runtime_7
-    dotnet-runtime_9
-    dotnet-runtime_10
-    dotnet-aspnetcore_6
-    dotnet-aspnetcore_7
-    dotnet-aspnetcore_9
-    dotnet-aspnetcore_10
+    #dotnet-sdk_9
+    #dotnet-sdk_10
+    #dotnet-runtime_9
+    #dotnet-runtime_10
+    #dotnet-aspnetcore_9
+    #dotnet-aspnetcore_10
 
     hypridle
     hyprlock
@@ -101,14 +95,15 @@
     # # symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
     ".bashrc".source = ./.bashrc;
-    "vpn-connect.sh".source = ./vpn-connect.sh
+    "vpn-connect.sh".source = ./vpn-connect.sh;
     ".config/nvim/lua".source = ./nvim/lua;
     ".config/kitty".source = ./kitty;
     ".config/hypr".source = ./hypr;
     ".config/hyprpanel".source = ./hyprpanel;
     ".config/wpaperd".source = ./wpaperd;
-    ".config/walker".source = ./walker;
+    ".config/walker/config.toml".source = ./walker/config.toml;
     "Pictures/wallpapers".source = ./wallpapers;
+    ".config/starship.toml".source = ./starship.toml;
 
     # # You can also set the file content immediately.
     # ".gradle/gradle.properties".text = ''
@@ -140,5 +135,4 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   programs.fish.enable = true;
-  programs.steam.enable = true
 }
