@@ -7,14 +7,39 @@
     nixpkgs.config.allowUnfree = true;
     fonts.fontconfig.enable = true;
 
-nixpkgs.overlays = [
-(import (builtins.fetchTarball {
-url = "https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz";
-}))
-];
+    nixpkgs.overlays = [
+        (import (builtins.fetchTarball { url = "https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz"; }))
+    ];
+
+    programs.firefox.enable = true;
+    programs.home-manager.enable = true;
+    programs.fish.enable = true;
+    programs.kitty = {
+        enable = true;
+        font = {
+            name = "Hasklug Nerd Font Light";
+            size = 14;
+        };
+        extraConfig = ''
+            font_family Hasklug Nerd Font Light
+            bold_font Hasklug Nerd Font Light
+            italic_font Hasklug Nerd Font Light
+
+            shell_integration enabled
+            confirm_os_window_close -1
+            map kitty_mod+t new_tab_with_cwd
+        '';
+    };
+    programs.vscode = {
+        enable = true;
+        profiles.default = {
+            extensions = with pkgs.vscode-extensions; [
+                ms-dotnettools.csharp
+            ];
+        };
+    };
 
     home.packages = with pkgs; [
-        neovim
         lua5_1
         luajitPackages.luarocks
         stylua
@@ -43,15 +68,25 @@ url = "https://github.com/nix-community/neovim-nightly-overlay/archive/master.ta
         tree-sitter
         sqlite
         dotnet-sdk_9
+        llvm
         lldb
+        netcoredbg
         omnisharp-roslyn
 
+        nerd-fonts.hasklug
+
+        walker
+        hyprpanel
+        wpaperd
+        hyprlock
+        nautilus
         hypridle
         hyprlock
         hyprshot
         playerctl
         cmake
 
+        neovim
         firefox
         google-chrome
         bitwarden-desktop
@@ -62,14 +97,15 @@ url = "https://github.com/nix-community/neovim-nightly-overlay/archive/master.ta
         lutris
         discord
         gimp3
-        nerd-fonts.hasklug
+        bitwarden-desktop
+        filezilla
+        mongodb-compass
     ];
 
     home.file = {
         ".bashrc".source = ./.bashrc;
         "vpn-connect.sh".source = ./vpn-connect.sh;
-	# ".config/nvim".source = ./nvim;
-        ".config/kitty".source = ./kitty;
+        ".config/nvim/init.lua".source = ./nvim-native/init.lua;
         ".config/hypr".source = ./hypr;
         ".config/hyprpanel".source = ./hyprpanel;
         ".config/wpaperd".source = ./wpaperd;
@@ -78,9 +114,5 @@ url = "https://github.com/nix-community/neovim-nightly-overlay/archive/master.ta
         ".config/starship.toml".source = ./starship.toml;
     };
 
-  home.sessionVariables = {
-  };
-
-  programs.home-manager.enable = true;
-  programs.fish.enable = true;
+  home.sessionVariables = { };
 }
