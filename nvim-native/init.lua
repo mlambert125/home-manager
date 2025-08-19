@@ -55,6 +55,13 @@ vim.pack.add { "https://github.com/nvim-tree/nvim-web-devicons" }
 vim.pack.add { "https://github.com/nvim-treesitter/nvim-treesitter" }
 vim.pack.add { "https://github.com/neovim/nvim-lspconfig" }
 
+vim.pack.add { "https://github.com/aznhe21/actions-preview.nvim" }
+require("actions-preview").setup {}
+
+
+vim.pack.add { "https://github.com/filipdutescu/renamer.nvim" }
+require("renamer").setup {}
+
 vim.pack.add { "https://github.com/folke/neodev.nvim" }
 require("neodev").setup {}
 
@@ -344,3 +351,9 @@ vim.keymap.set("n", "<leader>dt", function()
     end
     require("dapui").close()
 end, { desc = "Debug Terminate" })
+
+-- Code Actions
+vim.keymap.set("n", "<leader>ca", require("actions-preview").code_actions, { desc = "Code Actions" })
+
+-- Renamer
+vim.keymap.set("n", "<leader>cr", require("renamer").rename, { desc = "Rename Variable" })
