@@ -139,6 +139,9 @@ require("mini.completion").setup {
 vim.pack.add { "https://github.com/chentoast/marks.nvim" }
 require("marks").setup {}
 
+vim.pack.add { "https://github.com/folke/trouble.nvim" }
+require("trouble").setup { auto_open = true, auto_close = true, }
+
 vim.pack.add { "https://github.com/mfussenegger/nvim-dap" }
 require("dap").adapters.lldb = {
     type = "executable",
@@ -357,3 +360,5 @@ vim.keymap.set("n", "<leader>ca", require("actions-preview").code_actions, { des
 
 -- Renamer
 vim.keymap.set("n", "<leader>cr", require("renamer").rename, { desc = "Rename Variable" })
+
+-- Trouble
