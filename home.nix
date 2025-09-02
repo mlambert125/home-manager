@@ -10,6 +10,15 @@
     nixpkgs.overlays = [
         (import (builtins.fetchTarball { url = "https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz"; }))
     ];
+    
+    # Set the cursor theme for both X and Wayland.
+    home.pointerCursor = {
+        package = pkgs.catppuccin-cursors;
+        name = "Catppuccin-Mocha-Mauve-Cursors"; # Use the correct theme name
+        size = 24;
+        gtk.enable = true;
+        x11.enable = true;
+    };
 
     programs.firefox.enable = true;
     programs.home-manager.enable = true;
@@ -74,9 +83,11 @@
         omnisharp-roslyn
 
         nerd-fonts.hasklug
+        catppuccin-cursors.mochaMauve
+        blueberry
 
         walker
-        hyprpanel
+        waybar
         wpaperd
         hyprlock
         nautilus
@@ -85,6 +96,7 @@
         hyprshot
         playerctl
         cmake
+        pavucontrol
 
         neovim
         firefox
@@ -105,14 +117,17 @@
     home.file = {
         ".bashrc".source = ./.bashrc;
         "vpn-connect.sh".source = ./vpn-connect.sh;
-        ".config/nvim/init.lua".source = ./nvim-native/init.lua;
+        ".config/nvim/init.lua".source = ./nvim/init.lua;
         ".config/hypr".source = ./hypr;
         ".config/hyprpanel".source = ./hyprpanel;
+        ".config/waybar".source = ./waybar;
         ".config/wpaperd".source = ./wpaperd;
         ".config/walker/config.toml".source = ./walker/config.toml;
         "Pictures/wallpapers".source = ./wallpapers;
         ".config/starship.toml".source = ./starship.toml;
     };
 
-  home.sessionVariables = { };
+    home.sessionVariables = {
+        HYPRCURSOR_THEME = "Catppuccin-Macchiato-Rosewater-Cursors"; 
+    };
 }
