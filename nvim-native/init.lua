@@ -11,6 +11,7 @@ vim.opt.expandtab = true
 vim.opt.undofile = true
 vim.opt.signcolumn = "yes:2"
 vim.opt.clipboard = "unnamedplus"
+vim.opt.swapfile = false
 
 vim.diagnostic.config {
     virtual_text = { prefix = "●", spacing = 4 },
@@ -58,17 +59,23 @@ vim.pack.add { "https://github.com/neovim/nvim-lspconfig" }
 vim.pack.add { "https://github.com/aznhe21/actions-preview.nvim" }
 require("actions-preview").setup {}
 
-
 vim.pack.add { "https://github.com/filipdutescu/renamer.nvim" }
 require("renamer").setup {}
 
 vim.pack.add { "https://github.com/folke/neodev.nvim" }
 require("neodev").setup {}
 
--- Format before every write
-vim.api.nvim_create_autocmd("BufWritePre", { callback = function() vim.lsp.buf.format({ async = false }) end, })
-
---vim.pack.add {"https://github.com/github/copilot.vim"}
+vim.pack.add { "https://github.com/github/copilot.vim" }
+vim.pack.add { "https://github.com/CopilotC-Nvim/CopilotChat.nvim" }
+require("CopilotChat").setup {
+    temperature = 0.1,
+    window = {
+        border = "rounded",
+        layout = 'float',
+        width = 0.5,
+        height = 0.5,
+    },
+}
 
 vim.pack.add { "https://github.com/folke/persistence.nvim" }
 require("persistence").setup {
@@ -113,34 +120,24 @@ require("which-key").setup { preset = "helix" }
 
 vim.pack.add { "https://github.com/akinsho/bufferline.nvim" }
 require("bufferline").setup {
-    options = {
-        offsets = {
-            {
-                filetype = 'neo-tree',   -- Target the neo-tree window
-                text_align = 'center',   -- Optional: alignment of the text
-                highlight = 'Directory', -- Optional: highlight group for the offset area
-            },
-        },
-    },
+    options = { offsets = { { filetype = 'neo-tree', text_align = 'center', highlight = 'Directory' } } },
 }
 
 vim.pack.add { "https://github.com/echasnovski/mini.completion" }
 require("mini.completion").setup {
     auto_setup = true,
-    completion = {
-        sources = {
-            { name = "nvim_lsp" },
-            { name = "buffer" },
-            { name = "path" },
-        },
-    },
+    completion = { sources = { { name = "nvim_lsp" }, { name = "buffer" }, { name = "path" } } },
 }
 
 vim.pack.add { "https://github.com/chentoast/marks.nvim" }
 require("marks").setup {}
 
+vim.pack.add { "https://github.com/mrcjkb/rustaceanvim" }
+vim.pack.add { "https://github.com/nvim-neotest/neotest" }
+require("neotest").setup { adapters = { require("rustaceanvim.neotest") } }
+
 vim.pack.add { "https://github.com/folke/trouble.nvim" }
-require("trouble").setup { auto_open = true, auto_close = true, }
+require("trouble").setup { use_diagnostic_signs = true }
 
 vim.pack.add { "https://github.com/mfussenegger/nvim-dap" }
 require("dap").adapters.lldb = {
@@ -221,6 +218,9 @@ vim.pack.add { "https://github.com/rcarriga/nvim-notify" }
 vim.pack.add { "https://github.com/folke/noice.nvim" }
 require("noice").setup()
 
+vim.pack.add { "https://github.com/stevearc/oil.nvim" }
+require("oil").setup {}
+
 vim.pack.add { "https://github.com/rcarriga/nvim-dap-ui" }
 require("dapui").setup()
 require("dap").listeners.before.attach.dapui_config = function()
@@ -272,6 +272,13 @@ vim.lsp.enable("omnisharp")
 ------------------------------------------------------------------------
 -- KEYMAPS
 ------------------------------------------------------------------------
+-- Delete LSP defaults
+pcall(function() vim.keymap.del('n', 'gra') end)
+pcall(function() vim.keymap.del('n', 'gri') end)
+pcall(function() vim.keymap.del('n', 'grr') end)
+pcall(function() vim.keymap.del('n', 'grn') end)
+pcall(function() vim.keymap.del('n', 'grt') end)
+
 -- Easy window navigation
 vim.keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-j>", "<C-w>j", { noremap = true, silent = true })
@@ -313,7 +320,7 @@ vim.keymap.set("n", "<leader> ", require("telescope.builtin").find_files, { desc
 vim.keymap.set("n", "<leader>fr", require("telescope.builtin").oldfiles, { desc = "Telescope Recent Files" })
 vim.keymap.set("n", "<leader>/", require("telescope.builtin").live_grep, { desc = "Telescope Live Grep" })
 vim.keymap.set("n", "<leader>m", require("telescope.builtin").marks, { desc = "Telescope Marks" })
-vim.keymap.set("n", "<leader>x", function() require("telescope.builtin").diagnostics { bufnr = 0 } end,
+vim.keymap.set("n", "<leader>X", function() require("telescope.builtin").diagnostics { bufnr = 0 } end,
     { desc = "Telescope Diagnostics" })
 
 -- Bufferline
@@ -331,8 +338,10 @@ vim.keymap.set("n", "L", ":BufferLineCycleNext<CR>", { noremap = true, silent = 
 vim.keymap.set("n", "<leader>e", ":Neotree toggle<CR>", { noremap = true, silent = true, desc = "Toggle NeoTree" })
 
 -- LSP keymaps
-vim.api.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>",
+vim.api.nvim_set_keymap("n", "gd", "<cmd>Telescope lsp_definitions<CR>",
     { noremap = true, silent = true, desc = "Goto Definition" })
+vim.api.nvim_set_keymap("n", "gr", "<cmd>Telescope lsp_references<CR>",
+    { noremap = true, silent = true, desc = "Goto References" })
 
 -- Persistence
 vim.keymap.set("n", "<leader>s", require("persistence").load, { noremap = true, silent = true, desc = "Restore Session" })
@@ -361,4 +370,22 @@ vim.keymap.set("n", "<leader>ca", require("actions-preview").code_actions, { des
 -- Renamer
 vim.keymap.set("n", "<leader>cr", require("renamer").rename, { desc = "Rename Variable" })
 
--- Trouble
+-- Neotest
+vim.keymap.set("n", "<leader>ct", function() require("neotest").run.run(vim.fn.expand("%")) end, { desc = "Run tests" })
+
+-- Copilot Chat
+vim.keymap.set("n", "<leader>cc", function() require("CopilotChat").open() end, { desc = "Copilot Chat" })
+vim.keymap.set("n", "<leader>cp", function() require("CopilotChat").select_prompt() end, { desc = "Copilot Prompt" })
+vim.keymap.set("v", "<leader>cc", function() require("CopilotChat").open() end, { desc = "Copilot Chat" })
+vim.keymap.set("v", "<leader>cp", function() require("CopilotChat").select_prompt() end, { desc = "Copilot Prompt" })
+
+-- Oil
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Oil" })
+vim.keymap.set("n", "<leader>x", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Trouble Diagnostics" })
+
+
+------------------------------------------------------------------------
+--- Autocmds
+------------------------------------------------------------------------
+-- Format before every write
+vim.api.nvim_create_autocmd("BufWritePre", { callback = function() vim.lsp.buf.format({ async = false }) end, })
