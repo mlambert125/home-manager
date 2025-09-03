@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-    home.stateVersion = "25.05"; # Please read the comment before changing.
+    home.stateVersion = "25.05";
     home.username = "mikel";
     home.homeDirectory = "/home/mikel";
     nixpkgs.config.allowUnfree = true;
@@ -11,10 +11,9 @@
         (import (builtins.fetchTarball { url = "https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz"; }))
     ];
     
-    # Set the cursor theme for both X and Wayland.
     home.pointerCursor = {
         package = pkgs.catppuccin-cursors;
-        name = "Catppuccin-Mocha-Mauve-Cursors"; # Use the correct theme name
+        name = "Catppuccin-Mocha-Mauve-Cursors";
         size = 24;
         gtk.enable = true;
         x11.enable = true;
@@ -60,40 +59,54 @@
             ];
         };
     };
+    programs.bat.enable = true;
+    programs.fd.enable = true;
+    programs.fzf = {
+       enable = true; 
+       enableBashIntegration = true;
+    };
+    programs.lazygit.enable = true;
+    programs.ripgrep.enable = true;
+    programs.eza = {
+        enable = true;
+        enableBashIntegration = true;
+        colors = "always";
+        icons = "always";
+    };
+    programs.zoxide = {
+        enable = true;
+        enableBashIntegration = true;
+    };
+    programs.go.enable = true;
+    programs.jq.enable = true;
+    programs.java.enable = true;
+    programs.hyprlock.enable = true;
+    programs.obs-studio.enable = true;
+    programs.lutris.enable = true;
     services.udiskie = {
         enable = true;
         settings = {
-            # workaround for
-            # https://github.com/nix-community/home-manager/issues/632
             program_options = {
-                # replace with your favorite file manager
                 file_manager = "nautilus";
             };
         };
     };
     home.packages = with pkgs; [
+        starship
+        waybar
+
         lua5_1
         luajitPackages.luarocks
         stylua
         lua-language-server
-        fd
-        fzf
-        lazygit
-        ripgrep
         zip
         unzip
-        bat
-        eza
-        zoxide
-        starship
         rustup
         llvm
-        go
         ruby
         php
         php84Packages.composer
         nodejs_24
-        jdk
         julia
         python312
         python312Packages.pip
@@ -110,9 +123,7 @@
         blueberry
 
         walker
-        waybar
         wpaperd
-        hyprlock
         nautilus
         hypridle
         hyprlock
@@ -122,14 +133,11 @@
         pavucontrol
 
         neovim
-        firefox
         google-chrome
         bitwarden-desktop
         remmina
         freerdp
-        obs-studio
         vscode
-        lutris
         discord
         gimp3
         bitwarden-desktop
@@ -142,7 +150,6 @@
         "vpn-connect.sh".source = ./vpn-connect.sh;
         ".config/nvim/init.lua".source = ./nvim/init.lua;
         ".config/hypr".source = ./hypr;
-        ".config/hyprpanel".source = ./hyprpanel;
         ".config/waybar".source = ./waybar;
         ".config/wpaperd".source = ./wpaperd;
         ".config/walker/config.toml".source = ./walker/config.toml;
