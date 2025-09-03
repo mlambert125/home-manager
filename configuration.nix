@@ -83,15 +83,6 @@
     programs.niri.enable = true;
     programs.git = {
         enable = true;
-        userName = "Michael Lambert";
-        userEmail = "mlambert125@live.com";
-        extraConfig = {
-            "pull.rebase" = "false";
-            "init.defaultBranch" = "main";
-            "core.editor" = "nvim";
-            "credential.helper" = "store";
-            "push.autoSetupRemote" = "true";
-        };
     };
 
     # List packages installed in system profile. To search, run: $ nix search wget

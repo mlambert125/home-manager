@@ -20,6 +20,19 @@
         x11.enable = true;
     };
 
+    programs.git = {
+        enable = true;
+        userName = "Michael Lambert";
+        userEmail = "mlambert125@live.com";
+        extraConfig = {
+            pull.rebase = false;
+            init.defaultBranch = "main";
+            core.editor = "nvim";
+            credential.helper = "store";
+            push.autoSetupRemote = true;
+        };
+    };
+
     programs.firefox.enable = true;
     programs.home-manager.enable = true;
     programs.fish.enable = true;
