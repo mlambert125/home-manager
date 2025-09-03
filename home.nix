@@ -32,7 +32,44 @@
         };
     };
 
-    programs.firefox.enable = true;
+    programs.firefox = {
+        enable = true;
+        policies = {
+            DisableTelemetry = true;
+            DisableFirefoxStudies = true;
+            EnableTrackingProtection = {
+                Value = "always";
+                Locked = true;
+                Cryptomining = true;
+                Fingerprinting = true;
+            };
+            # Do not erase history on close
+            ClearHistoryOnShutdown = {
+                Value = false;
+                Locked = true;
+            };
+            # Do not disable cookies
+            NetworkCookieCookieBehavior = {
+                Value = 0;
+                Locked = true;
+            };
+            # Do not disable cache
+            NetworkCookieThirdPartyNonsecureSessionOnly = {
+                Value = false;
+                Locked = true;
+            };
+            NetworkCookieThirdPartySessionOnly = {
+                Value = false;
+                Locked = true;
+            };
+
+            DisablePocket = true;
+            DisplayBookmarksToolbar = "always";
+            DefaultSearchEngine = "DuckDuckGo";
+            Preferences = {
+            };
+        };
+    };
     programs.home-manager.enable = true;
     programs.fish.enable = true;
     programs.kitty = {
@@ -83,6 +120,7 @@
     programs.hyprlock.enable = true;
     programs.obs-studio.enable = true;
     programs.lutris.enable = true;
+    programs.btop.enable = true;
     services.udiskie = {
         enable = true;
         settings = {
@@ -227,5 +265,6 @@
 
     home.sessionVariables = {
         HYPRCURSOR_THEME = "Catppuccin-Macchiato-Rosewater-Cursors"; 
+        TERM = "kitty";
     };
 }

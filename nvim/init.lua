@@ -54,6 +54,16 @@ vim.pack.add { "https://github.com/nvim-neotest/nvim-nio" }
 vim.pack.add { "https://github.com/echasnovski/mini.icons" }
 vim.pack.add { "https://github.com/nvim-tree/nvim-web-devicons" }
 vim.pack.add { "https://github.com/nvim-treesitter/nvim-treesitter" }
+require("nvim-treesitter.configs").setup {
+    ensure_installed = { "lua", "rust", "c_sharp", "json", "toml", "yaml", "markdown", "markdown_inline" },
+    highlight = { enable = true },
+    indent = { enable = true },
+    incremental_selection = {
+        enable = false
+    },
+    auto_install = true,
+    sync_install = false,
+}
 vim.pack.add { "https://github.com/neovim/nvim-lspconfig" }
 
 vim.pack.add { "https://github.com/aznhe21/actions-preview.nvim" }
@@ -64,6 +74,9 @@ require("renamer").setup {}
 
 vim.pack.add { "https://github.com/folke/neodev.nvim" }
 require("neodev").setup {}
+
+vim.pack.add { "https://github.com/folke/snacks.nvim" }
+require("snacks").setup {}
 
 vim.pack.add { "https://github.com/github/copilot.vim" }
 vim.pack.add { "https://github.com/CopilotC-Nvim/CopilotChat.nvim" }
@@ -134,10 +147,18 @@ require("marks").setup {}
 
 vim.pack.add { "https://github.com/mrcjkb/rustaceanvim" }
 vim.pack.add { "https://github.com/nvim-neotest/neotest" }
-require("neotest").setup { adapters = { require("rustaceanvim.neotest") } }
-
-vim.pack.add { "https://github.com/folke/trouble.nvim" }
-require("trouble").setup { use_diagnostic_signs = true }
+require("neotest").setup {
+    adapters = { require("rustaceanvim.neotest") },
+    summary = {
+        open = "float",
+        float = {
+            border = "rounded",
+            width = 80,
+            height = 30,
+            position = "50%",
+        },
+    }
+}
 
 vim.pack.add { "https://github.com/mfussenegger/nvim-dap" }
 require("dap").adapters.lldb = {
@@ -320,7 +341,7 @@ vim.keymap.set("n", "<leader> ", require("telescope.builtin").find_files, { desc
 vim.keymap.set("n", "<leader>fr", require("telescope.builtin").oldfiles, { desc = "Telescope Recent Files" })
 vim.keymap.set("n", "<leader>/", require("telescope.builtin").live_grep, { desc = "Telescope Live Grep" })
 vim.keymap.set("n", "<leader>m", require("telescope.builtin").marks, { desc = "Telescope Marks" })
-vim.keymap.set("n", "<leader>X", function() require("telescope.builtin").diagnostics { bufnr = 0 } end,
+vim.keymap.set("n", "<leader>x", function() require("telescope.builtin").diagnostics { severity_bound = 0 } end,
     { desc = "Telescope Diagnostics" })
 
 -- Bufferline
@@ -371,7 +392,39 @@ vim.keymap.set("n", "<leader>ca", require("actions-preview").code_actions, { des
 vim.keymap.set("n", "<leader>cr", require("renamer").rename, { desc = "Rename Variable" })
 
 -- Neotest
-vim.keymap.set("n", "<leader>ct", function() require("neotest").run.run(vim.fn.expand("%")) end, { desc = "Run tests" })
+vim.keymap.set("n", "<leader>tt", function() require("neotest").run.run(vim.fn.expand("%")) end, { desc = "Run Tests" })
+vim.keymap.set("n", "<leader>to", function()
+    vim.notify("Opening test output...", vim.log.levels.INFO)
+    require("neotest").output_panel.toggle()
+    --[[
+    --require("neotest").output.open()
+    local buf = vim.fn.bufnr("Neotest Output Panel")
+    if buf == -1 then
+        vim.notify("Test output buffer not found", vim.log.levels.WARN)
+        return
+    end
+    local win = vim.fn.bufwinnr(buf)
+    if win ~= -1 then
+        vim.api.nvim_win_close(win, true)
+    else
+        vim.notify("Test output window not found", vim.log.levels.WARN)
+        return
+    end
+
+    vim.notify("Reopening test output...", vim.log.levels.INFO)
+    require("snacks").win({
+        ft = "neotest-output",
+        title = "Test Output",
+        border = "rounded",
+        size = {
+            width = 80,
+            height = 0.8,
+        },
+    }, function()
+        vim.api.nvim_set_current_buf(buf)
+    end)
+    --]]
+end, { desc = "View Test Output" })
 
 -- Copilot Chat
 vim.keymap.set("n", "<leader>cc", function() require("CopilotChat").open() end, { desc = "Copilot Chat" })
@@ -381,7 +434,6 @@ vim.keymap.set("v", "<leader>cp", function() require("CopilotChat").select_promp
 
 -- Oil
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Oil" })
-vim.keymap.set("n", "<leader>x", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Trouble Diagnostics" })
 
 
 ------------------------------------------------------------------------

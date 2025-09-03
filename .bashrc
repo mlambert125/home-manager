@@ -13,6 +13,7 @@ alias la='eza -la'
 alias lla='eza -lla'
 alias cat=bat
 alias zz='z -'
+alias hs='home-manager switch'
 
 # Starship
 eval "$(starship init bash)"

@@ -1,10 +1,6 @@
 * {
     background-color: black;
     color: white;
-
-    border: none;
-    border-radius: 0;
-    min-height: 0;
     font-family: CaskaydiaMono Nerd Font;
     font-size: 12pt;
 }
@@ -33,27 +29,13 @@
 #battery,
 #network,
 #bluetooth,
-#pulseaudio,
-#custom-omarchy,
-#custom-update {
+#pulseaudio {
     min-width: 12px;
-    margin: 0 7.5px;
-}
-
-#custom-expand-icon {
-    margin-right: 7px;
+    margin: 0 8px;
 }
 
 tooltip {
     padding: 2px;
-}
-
-#custom-update {
-    font-size: 10px;
-}
-
-#clock {
-    margin-left: 8.75px;
 }
 
 .hidden {
