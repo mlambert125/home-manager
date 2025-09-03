@@ -91,10 +91,78 @@
             };
         };
     };
+    services.dunst = {
+        enable = true;
+        settings = {
+            global = {
+                font = "Hasklug Nerd Font Light 12";
+                follow = "mouse";
+                width = 500;
+                max_width = 500;
+                height = 100;
+                max_height = 500;
+                indicate_hidden = "yes";
+                shrink = "no";
+                transparency = 0;
+                notification_height = 0;
+                separator_height = 2;
+                padding = 8;
+                horizontal_padding = 8;
+                frame_width = 1;
+                frame_color = "#4287f5";
+                sort = "yes";
+                idle_threshold = 0;
+
+                line-height = 0;
+                markup = "full";
+                format = "<b>%a</b>\n<i>%s</i>\n%b";
+                alignment = "center";
+                vertical_alignment = "center";
+                show_age_threshold = -1;
+                word_wrap = "no";
+                ellipsize = "middle";
+                ignore_newline = "no";
+                stack_duplicates = true;
+                hide_duplicate_count = true;
+                show_indicators = "no";
+   
+                icon_position = "off";
+
+                history_length = 20;
+                browser = "/home/mikel/.nix-profile/bin/firefox -new-tab";
+                always_run_script = true;
+                title = "Dunst";
+                class = "Dunst";
+                startup_notification = true;
+                verbosity = "mesg";
+                corner_radius = 15;
+                ignore_dbusclose = false;
+                mouse_left_click = "close";
+                mouse_middle_click = "do_action";
+                mouse_right_click = "context";
+            };
+            shortcuts = {
+                close = "ctrl+space";
+                close_all = "ctrl+shift+space";
+            };
+            urgency_normal = {
+                background = "#202632";
+                foreground = "#ffffff";
+                timeout = 5;
+            };
+            urgency_critical = {
+                background = "#ffffff";
+                foreground = "#db0101";
+                timeout = 0;
+            };
+        };
+    };
     home.packages = with pkgs; [
         starship
         waybar
+        walker
 
+        libnotify
         lua5_1
         luajitPackages.luarocks
         stylua
@@ -122,7 +190,6 @@
         catppuccin-cursors.mochaMauve
         blueberry
 
-        walker
         wpaperd
         nautilus
         hypridle
@@ -146,14 +213,15 @@
     ];
 
     home.file = {
-        ".bashrc".source = ./.bashrc;
+        "Pictures/wallpapers".source = ./wallpapers;
         "vpn-connect.sh".source = ./vpn-connect.sh;
         ".config/nvim/init.lua".source = ./nvim/init.lua;
+        ".bashrc".source = ./.bashrc;
+
         ".config/hypr".source = ./hypr;
         ".config/waybar".source = ./waybar;
         ".config/wpaperd".source = ./wpaperd;
         ".config/walker/config.toml".source = ./walker/config.toml;
-        "Pictures/wallpapers".source = ./wallpapers;
         ".config/starship.toml".source = ./starship.toml;
     };
 
