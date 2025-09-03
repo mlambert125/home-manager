@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-    imports = [ ./hardware-configuration.nix ./cachix.nix ];
+    imports = [ ./hardware-configuration.nix ];
 
     networking.hostName = "mikel-laptop-nixos";
     networking.networkmanager.enable = true;
