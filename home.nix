@@ -35,7 +35,7 @@
             italic_font Hasklug Nerd Font Light
 
             shell_integration enabled
-            confirm_os_window_close -1
+            confirm_os_window_close 0 
             map kitty_mod+t new_tab_with_cwd
         '';
     };
