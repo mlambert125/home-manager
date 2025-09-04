@@ -436,10 +436,19 @@ vim.keymap.set("n", "<leader>ac", function() require("CopilotChat").open() end, 
 vim.keymap.set("n", "<leader>ap", function() require("CopilotChat").select_prompt() end, { desc = "Copilot Prompt" })
 vim.keymap.set("v", "<leader>ac", function() require("CopilotChat").open() end, { desc = "Copilot Chat" })
 vim.keymap.set("v", "<leader>ap", function() require("CopilotChat").select_prompt() end, { desc = "Copilot Prompt" })
+vim.keymap.set("n", "<leader>ae",
+    function()
+        vim.cmd("Copilot enable")
+        vim.notify("Copilot enabled", vim.log.levels.INFO)
+    end, { desc = "Copilot Enable" })
+vim.keymap.set("n", "<leader>ad",
+    function()
+        vim.cmd("Copilot disable")
+        vim.notify("Copilot disabled", vim.log.levels.WARN)
+    end, { desc = "Copilot Disable" })
 
 -- Oil
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Oil" })
-
 
 ------------------------------------------------------------------------
 --- Autocmds
