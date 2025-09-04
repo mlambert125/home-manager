@@ -1,4 +1,35 @@
 ------------------------------------------------------------------------
+--- Custom Functions
+------------------------------------------------------------------------
+local function open_floating_term(cmd)
+    -- Create a scratch buffer
+    local buf = vim.api.nvim_create_buf(false, true)
+
+    -- Calculate size/position (centered)
+    local width = math.floor(vim.o.columns * 0.8)
+    local height = math.floor(vim.o.lines * 0.8)
+    local row = math.floor((vim.o.lines - height) / 2)
+    local col = math.floor((vim.o.columns - width) / 2)
+
+    -- Open floating window
+    vim.api.nvim_open_win(buf, true, {
+        relative = "editor",
+        width = width,
+        height = height,
+        row = row,
+        col = col,
+        style = "minimal",
+        border = "rounded",
+    })
+
+    -- Start terminal in it
+    vim.fn.termopen(cmd or os.getenv("SHELL"))
+
+    -- Optional: enter insert mode by default
+    vim.cmd("startinsert")
+end
+
+------------------------------------------------------------------------
 -- OPTIONS
 ------------------------------------------------------------------------
 vim.g.mapleader = " "
@@ -391,46 +422,20 @@ vim.keymap.set("n", "<leader>ca", require("actions-preview").code_actions, { des
 -- Renamer
 vim.keymap.set("n", "<leader>cr", require("renamer").rename, { desc = "Rename Variable" })
 
+-- Floating terminal
+vim.keymap.set("n", "<leader><CR>", function() open_floating_term() end, { desc = "Open floating terminal" })
+
 -- Neotest
 vim.keymap.set("n", "<leader>tt", function() require("neotest").run.run(vim.fn.expand("%")) end, { desc = "Run Tests" })
-vim.keymap.set("n", "<leader>to", function()
-    vim.notify("Opening test output...", vim.log.levels.INFO)
-    require("neotest").output_panel.toggle()
-    --[[
-    --require("neotest").output.open()
-    local buf = vim.fn.bufnr("Neotest Output Panel")
-    if buf == -1 then
-        vim.notify("Test output buffer not found", vim.log.levels.WARN)
-        return
-    end
-    local win = vim.fn.bufwinnr(buf)
-    if win ~= -1 then
-        vim.api.nvim_win_close(win, true)
-    else
-        vim.notify("Test output window not found", vim.log.levels.WARN)
-        return
-    end
-
-    vim.notify("Reopening test output...", vim.log.levels.INFO)
-    require("snacks").win({
-        ft = "neotest-output",
-        title = "Test Output",
-        border = "rounded",
-        size = {
-            width = 80,
-            height = 0.8,
-        },
-    }, function()
-        vim.api.nvim_set_current_buf(buf)
-    end)
-    --]]
-end, { desc = "View Test Output" })
+vim.keymap.set("n", "<leader>tO", function() require("neotest").output_panel.toggle() end, { desc = "View Test Output" })
+vim.keymap.set("n", "<leader>to", function() open_floating_term({ "cargo", "test" }) end,
+    { desc = "Run cargo test and show output" })
 
 -- Copilot Chat
-vim.keymap.set("n", "<leader>cc", function() require("CopilotChat").open() end, { desc = "Copilot Chat" })
-vim.keymap.set("n", "<leader>cp", function() require("CopilotChat").select_prompt() end, { desc = "Copilot Prompt" })
-vim.keymap.set("v", "<leader>cc", function() require("CopilotChat").open() end, { desc = "Copilot Chat" })
-vim.keymap.set("v", "<leader>cp", function() require("CopilotChat").select_prompt() end, { desc = "Copilot Prompt" })
+vim.keymap.set("n", "<leader>ac", function() require("CopilotChat").open() end, { desc = "Copilot Chat" })
+vim.keymap.set("n", "<leader>ap", function() require("CopilotChat").select_prompt() end, { desc = "Copilot Prompt" })
+vim.keymap.set("v", "<leader>ac", function() require("CopilotChat").open() end, { desc = "Copilot Chat" })
+vim.keymap.set("v", "<leader>ap", function() require("CopilotChat").select_prompt() end, { desc = "Copilot Prompt" })
 
 -- Oil
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Oil" })
